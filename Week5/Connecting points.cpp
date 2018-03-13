@@ -8,25 +8,26 @@ typedef vector<double> vd;
 typedef pair<int,int> ii;
 
 int weight(int x1,int y1, int x2, int y2){
-	return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+	return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
+
 class UnionFind {
-	private: vi p, rank;
+	private: vi parent, rank;
 	public:
 	UnionFind(int N) {
 		rank.assign(N, 0);
-		p.assign(N, 0);
-		for (int i = 0; i < N; i++) p[i] = i;
+		parent.assign(N, 0);
+		for (int i = 0; i < N; i++) parent[i] = i;
 	}
 	
-	int findSet(int i) { return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
+	int findSet(int i) { return (parent[i] == i) ? i : (parent[i] = findSet(parent[i])); }
 	bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
 	void unionSet(int i, int j) {
 		if (!isSameSet(i, j)) {
 			int x = findSet(i), y = findSet(j);
-			if (rank[x] > rank[y]) p[y] = x;
+			if (rank[x] > rank[y]) parent[y] = x;
 			else {
-				p[x] = y;
+				parent[x] = y;
 				if (rank[x] == rank[y]) rank[y]++;
 			}
 } } };
