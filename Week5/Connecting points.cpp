@@ -7,7 +7,7 @@ typedef vector<int> vi;
 typedef vector<double> vd;
 typedef pair<int,int> ii;
 
-int weight(int x1,int y1, int x2, int y2){
+double weight(int x1,int y1, int x2, int y2){
 	return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
 
@@ -19,7 +19,7 @@ class UnionFind {
 		parent.assign(N, 0);
 		for (int i = 0; i < N; i++) parent[i] = i;
 	}
-	
+
 	int findSet(int i) { return (parent[i] == i) ? i : (parent[i] = findSet(parent[i])); }
 	bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
 	void unionSet(int i, int j) {
@@ -33,29 +33,29 @@ class UnionFind {
 } } };
 
 int main() {
-	int n;
+	int n,k,count=0;
 	cin>>n;
-	vector< pair<int, ii> > EdgeList;
+	vector< pair<double, ii> > EdgeList;
 	vector<int>u(n),v(n);
 	for (int i = 0; i < n; i++) {
 		scanf("%d %d", &u[i], &v[i]);
 	}
-
 	for(int i=0;i<n;i++)
 		for(int j=i+1;j<n;j++)
 			EdgeList.push_back(make_pair(weight(u[i],v[i],u[j],v[j]), ii(i,j)));
 
 	sort(EdgeList.begin(), EdgeList.end());
-	int mst_cost = 0;
+	double mst_cost = 0;
 	UnionFind UF(n);
 
 	for (int i = 0; i < n; i++) {
-		pair<int, ii> front = EdgeList[i];
+		pair<double, ii> front = EdgeList[i];
 		if (!UF.isSameSet(front.second.first, front.second.second)) {
+			count++;
 			mst_cost += front.first;
 			UF.unionSet(front.second.first, front.second.second);
 		}
 	}
-	printf("MST cost = %d (Kruskal’s)\n", mst_cost);
+	printf("%.10lf\n", mst_cost);
 	return 0;
 }
